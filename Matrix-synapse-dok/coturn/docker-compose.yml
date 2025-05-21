@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  coturn:
+    image: coturn/coturn
+    container_name: coturn
+    ports:
+      - "3478:3478"
+      - "3478:3478/udp"
+      - "5349:5349"
+      - "5349:5349/udp"
+      - "49952-50052:49952-50052/udp"  
+    volumes:
+      - ./turnserver.conf:/etc/coturn/turnserver.conf:ro
+      - /root/Certs:/etc/coturn/certs:ro
+      - ./Certs:/etc/coturn/certs:ro
+    restart: always
+    networks:
+      - matrix_net
+
+networks:
+  matrix_net:
+    external: true
