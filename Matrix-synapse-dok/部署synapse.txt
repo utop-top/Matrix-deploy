@@ -1,13 +1,14 @@
 mkdir /root/Matrix/Synapse
 
 cd /root/Matrix/Synapse
-
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 复制下面代码  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
 docker run -it --rm \
     -v $(pwd)/synapse:/data \
     -e SYNAPSE_SERVER_NAME=example.com \   #改为你的matrix域名
     -e SYNAPSE_REPORT_STATS=no \
     matrixdotorg/synapse:latest generate
 
+回车运行
 
 将生成的 homeserve文件中的
 
