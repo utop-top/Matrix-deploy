@@ -1,0 +1,33 @@
+services:
+  nginx-host:
+    image: nginx
+    container_name: nginx-host
+    restart: always
+    network_mode: "host"
+    ports:
+#      - "8777:8077"
+      - "443:443"
+    volumes:
+      - ./config:/etc/nginx
+      - ./synapse:/etc/nginx/synapse
+      - ./ele-hq:/etc/nginx/ele-hq
+      - ./other:/etc/nginx/other
+      - ./well-known:/var/www
+      - /root/Certs/Certbot:/etc/nginx/ssl:ro
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65535
+        hard: 65535
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+#    sysctls:
+#      - net.core.somaxconn=65535 # 增加连接队列
+#      - net.ipv4.ip_local_port_range=1024 65535 # 扩展端口范围
+#      - net.ipv4.tcp_tw_reuse=1 # 加速 TIME_WAIT 回收
+#      - net.ipv4.tcp_fin_timeout=15 # 缩短 socket 关闭时间
+
+
