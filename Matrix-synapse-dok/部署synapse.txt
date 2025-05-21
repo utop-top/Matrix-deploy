@@ -9,6 +9,7 @@ docker run -it --rm \
     matrixdotorg/synapse:latest generate
 
 回车运行
+在/root/Matrix/Synapse/synapse   目录下看到homeserve.yaml文件
 
 将生成的 homeserve文件中的
 
