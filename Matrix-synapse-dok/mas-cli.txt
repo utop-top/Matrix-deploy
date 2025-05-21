@@ -1,0 +1,30 @@
+docker compose exec mas mas-cli -c /data/config.yaml  doctor  #健康检查
+
+
+docker compose exec mas mas-cli -c /data/config.yaml manage register-user  #创建用户
+
+
+docker compose exec mas mas-cli -c /data/config.yaml manage set-password name <password>
+
+设置id name密码为<password>
+
+
+lock-user
+
+docker compose exec mas mas-cli -c /data/config.yaml manage lock-user name #锁定用户
+
+docker compose exec mas mas-cli -c /data/config.yaml manage unlock-user name   #解除锁定
+
+
+Commands:
+  add-email                  Add an email address to the specified user
+  verify-email               (DEPRECATED) Mark email address as verified
+  set-password               Set a user password
+  issue-compatibility-token  Issue a compatibility token
+  provision-all-users        Trigger a provisioning job for all users
+  kill-sessions              Kill all sessions for a user
+  lock-user                  Lock a user
+  unlock-user                Unlock a user
+  register-user              Register a user
+  help                       Print this message or the help of the given subcommand(s)
+
