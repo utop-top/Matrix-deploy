@@ -1,0 +1,46 @@
+mkdir /root/Matrix/Synapse
+
+cd /root/Matrix/Synapse
+
+docker run -it --rm \
+    -v $(pwd)/synapse:/data \
+    -e SYNAPSE_SERVER_NAME=example.com \   #改为你的matrix域名
+    -e SYNAPSE_REPORT_STATS=no \
+    matrixdotorg/synapse:latest generate
+
+
+将生成的 homeserve文件中的
+
+
+registration_shared_secret: "2GVs0Wqgp8pZgFEV^G8ysO2m5Jtem;D&V3UUpi+&n+2VQp4iKS"
+report_stats: false
+macaroon_secret_key: "YDcvO#w,h^iSpmCc5L&F_I9FozAdR@8M3;oFGbh~@,HPNuiPZ2"
+form_secret: "wcwbBxghd5rG6Hd@U^BVK;Q4@kySI^k&zV#N8t+AZ7rNlwpe;u"
+signing_key_path: "/data/aa.aosn.de.signing.key"
+trusted_key_servers:
+  - server_name: "matrix.org"
+
+替换到 github中的homeserver-example.yaml 块 :中
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 替换为首次生成的homeserver块代码  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+
+
+registration_shared_secret: "dAx&h_a4*:@q;AsBRoiiSmYDRHwtbRA_@K-Xl@2JeU,.l+d-Iw"
+report_stats: false
+macaroon_secret_key: "4y;tqYA#HLz_7+Q2w3d,Mws:z=c4ORh;OY:8yboP6Xv*t+G249"
+form_secret: ":BzAWR#~82Yhzf::l2A:h~VKjqHFvKeJKuSPj:^*HUHo;*7@cX"
+signing_key_path: "/data/mtx.aosn.de.signing.key"
+trusted_key_servers:
+  - server_name: "matrix.org"
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ |||||||||||||||||||||||||||||||||  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+
+
+最后复制homeserver-example.yaml代码
+至： homeserer.yaml文件中
+
+cd /root/Matrix/Synapse
+
+启动docker 容器
+
+docker compose up -d 
