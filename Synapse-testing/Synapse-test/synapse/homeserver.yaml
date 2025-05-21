@@ -1,0 +1,519 @@
+worker_replication_secret: "f7a9c2e5b8d341f690e3b6d24c8e9f1d"
+server_name: "mtx.aosn.de"
+pid_file: /data/homeserver.pid
+public_baseurl: https://mtx.aosn.de/
+suppress_key_server_warning: true
+
+presence:
+  enabled: true
+push:
+  enabled: true
+
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    resources:
+      - names: [client, federation]
+        compress: false
+  - port: 9093
+    tls: false
+    type: http
+    resources:
+      - names: [replication]
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 数据库 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+database:
+  name: psycopg2
+  txn_limit: 10000
+  args:
+    user: synapse_user
+    password: your_password
+    dbname: synapse
+    host: synapse-db
+    port: 5432
+    cp_min: 5                # 最小连接数不变
+    cp_max: 40               # 降低到 100，避免连接过多耗尽资源
+#    cp_noisy: True          # 启用连接池日志，便于调试
+#    connect_timeout: 10
+
+# 将单个 Synapse 实例的负载分散到多个数据库后端。这通常被称为“数据库分片”
+# my_other_database:
+#    name: psycopg2
+#    txn_limit: 10000
+#    data_stores: ["state"]
+#    args:
+#      user: synapse_user
+#      password: secretpassword
+#      dbname: synapse_state
+#      host: localhost
+#      port: 5432
+#      cp_min: 5
+#      cp_max: 10
+
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ worker工人 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+#start_pushers: false  # 主synapse 推送
+send_federation: false
+# 用单独的媒体存储工作器，请设置为 false
+enable_media_repo: false
+
+#  enable_typing_writer: false
+#update_user_directory_from_worker: event-persister-1
+#media_instance_running_background_jobs: media-worker
+workers:
+  federation_sender_instances: 
+    - federation-sender-1
+#    - federation-sender-2
+#    - federation-sender-3
+#    - federation_sender_4
+#    - federation_sender_5
+#    - federation_sender_6
+#  pusher_instances:
+#    - push-worker
+  generic_worker_instances:
+    - generic-worker-1
+#    - generic-worker-2
+#    - generic-worker-3
+  media_repository_instances:
+    - media-worker
+#outbound_federation_restricted_to:
+#  - federation-sender-1
+#  - federation-sender-2
+#  - federation-sender-3
+
+instance_map:
+  main:
+    host: 'synapse'
+    port: 9093
+  generic-worker-1:
+    host: generic-worker-1
+    port: 9001
+  generic-worker-2:
+    host: generic-worker-2
+    port: 9011
+  generic-worker-3:
+    host: generic-worker-3
+    port: 9012
+  media-worker:
+    host: media-worker
+    port: 9002
+  push-worker:
+    host: push-worker
+    port: 9004
+  event-persister-1:
+    host: event-persister-1
+    port: 9033
+  event-persister-2:
+    host: event-persister-2
+    port: 9034
+
+
+
+#stream_writers:
+#  events: 
+#    - generic-worker-1
+#    - generic-worker-2
+#  typing: 
+#    - event-persister-1
+#  receipts:
+#    - event-persister-2
+#  account_data:
+#    - event-persister-3
+#  to_device:
+#    - event-persister-4
+#  presence:
+#    - event-persister-5
+
+redis:
+  enabled: true
+  host: synapse-redis
+  port: 6379
+  dbid: 0
+
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 端点 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+# 是否需要身份验证才能通过客户端 API 检索其他用户的个人资料数据（头像、显示名称）
+require_auth_for_profile_requests: true
+# 必须与其他用户共享房间才能获取其个人资料信息
+limit_profile_requests_to_users_who_share_rooms: true
+# 可防止用户个人资料数据在加入房间之前被检索并显示在房间中
+include_profile_data_on_invite: false
+# 无需身份验证即可通过客户端 API 访问服务器的公共房间目录
+allow_public_rooms_without_auth: false
+# 允许任何其他主服务器通过联合获取该服务器的公共房间目录
+#allow_public_rooms_over_federation: false
+
+
+# 是否阻止向本服务器用户发送房间邀请
+#block_non_admin_invites: true
+# 如果设置为 false，新消息将不会被索引
+enable_search: false
+
+# 设置定义发送虚拟事件的阈值 
+dummy_events_threshold: 20
+
+# 注销并删除超过指定时间未访问的设备
+delete_stale_devices_after: 50d
+
+# 禁用/启用月活跃用户阻止功能
+limit_usage_by_mau: true
+#设置每月活跃用户数的硬限制
+max_mau_value: 500
+#为活跃用户添加宽限期 必须活跃指定天数
+mau_trial_days: 5
+# 如果用户是通过应用服务注册的，则应用不同的试用天数。值为 0 表示不应用试用天数
+mau_appservice_trial_days:
+  my_appservice_id: 3
+  another_appservice_id: 6
+
+# 在达到月活跃用户限制时限制客户端发出警报
+mau_limit_alerting: true
+
+# 永远不会被 mau 检查阻止。这些帐户由此选项指定。
+mau_limit_reserved_threepids:
+  - medium: 'email'
+    address: '-@mtx.aosn.de'
+
+# 启用此选项后，用户加入新的远程房间之前，服务器会检查房间的“复杂度”。如果复杂度超过限制，服务器将拒绝加入
+# enabled：是否启用此检查。默认为 false。
+# complexity：超过该限制则无法加入房间。默认值为 1.0。
+# complexity_error：使用自定义消息覆盖当房间过于复杂时返回的错误。
+# admins_can_join：允许服务器管理员加入复杂房间。默认为 false。
+limit_remote_rooms:
+  enabled: true
+  complexity: 2.0
+  complexity_error: "I can't let you do that, Dave."
+  admins_can_join: true
+
+# 用户头像允许的最大文件大小
+max_avatar_size: 10M
+# 用户头像允许的 MIME 类型。默认无限制
+allowed_avatar_mimetypes: ["image/png", "image/jpeg", "image/gif"]
+# 已编辑事件在数据库中以未编辑形式保留的时间
+redaction_retention_period: 3d
+
+# 在从数据库中清除本地被遗忘的房间之前，要保留它们多长时间
+# 默认为null，表示已禁用
+forgotten_room_retention_period: null
+# 在数据库中跟踪用户最后上线时间和 IP 的时间有多长
+user_ips_max_age: 28d
+
+
+#  false 以禁用通过联邦查找个人资料的功能
+allow_profile_lookup_over_federation: false
+# 设置为 true 可允许通过联合查找设备显示名称
+allow_device_name_lookup_over_federation: false
+
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 速率限制 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+# 客户端消息传递的速率限制设置
+rc_message:
+  per_second: 0.5
+  burst_count: 15
+# 根据客户端的 IP 地址限制注册请求的速率
+rc_registration:
+  per_second: 0.15
+  burst_count: 2
+
+# 项检查根据客户端 IP 地址限制请求速率的注册令牌的有效性
+rc_registration_token_validity:
+  per_second: 0.3
+  burst_count: 6
+
+# 此选项指定了登录的几个限制：
+# address根据客户端 IP 地址限制登录请求的速率。默认为per_second: 0.003, burst_count: 5。
+# account根据客户端尝试登录的账户限制登录请求的速率。默认为per_second: 0.003, burst_count: 5。
+# failed_attempts根据客户端尝试登录的账户，以及该账户的登录失败次数，限制登录请求的速率。默认值为per_second: 0.17, burst_count: 3。
+rc_login:
+  address:
+    per_second: 0.15
+    burst_count: 5
+  account:
+    per_second: 0.18
+    burst_count: 4
+  failed_attempts:
+    per_second: 0.19
+    burst_count: 7
+
+# 设置房间管理员的删帖频率限制
+rc_admin_redaction:
+  per_second: 1
+  burst_count: 50
+# 选项允许限制用户加入的房间数量。此设置包含以下子选项：
+# local：当用户加入服务器已经在的房间时的速率限制。默认为per_second: 0.1，burst_count: 10。
+# remote：当用户尝试加入不在服务器上的房间时，进行速率限制（这可能比本地限制更耗费计算资源）。默认为 per_second: 0.01，burst_count: 10
+
+rc_joins:
+  local:
+    per_second: 0.2
+    burst_count: 15
+  remote:
+    per_second: 0.03
+    burst_count: 12
+
+# 定义联合请求的限制
+
+#rc_federation:
+#  window_size: 750
+#  sleep_limit: 15
+#  sleep_delay: 400
+#  reject_limit: 40
+#  concurrent: 5
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 媒体商店 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#####
+media_repository:
+  enable_authenticated_media: false
+  dynamic_thumbnails: true
+  local_media_lifetime: 50d
+  remote_media_lifetime: 14d
+  max_event_delay_duration: 24h
+  max_pending_media_uploads: 10
+  max_spider_size: "10M"
+  max_upload_size: "2048M"
+  max_image_pixels: "35M"
+  max_thumbnail_generators: 20
+  unused_expiration_time: "10h"
+  remote_media_download_burst_count: "1024M"
+  remote_media_download_per_second: "400K"
+
+#message_retention:
+#  default: "delete"
+
+# 设置为 true 时，所有后续媒体上传都将被标记为已验证，并且将无法通过旧版未经验证的媒体端点
+#enable_authenticated_media: false
+# 特定用户可以有多少个待处理的媒体上传
+#max_pending_media_uploads: 10
+# 已创建的媒体 ID 过期前等待的时间（以毫秒为单位）。默认为“24 小时”
+#unused_expiration_time: "10h"
+# 允许的最大上传大小
+#max_upload_size: 2048M
+# 缩略图的最大像素数
+#max_image_pixels: 35M
+# 远程媒体下载使用漏桶算法进行速率限制
+#remote_media_download_burst_count: 1024M
+# 与远程媒体下载速率限制配合使用
+#remote_media_download_per_second: 400K
+
+# 禁止从中下载媒体的域名列表
+# prevent_media_downloads_from:
+#   - evil.example.org
+#   - evil2.example.org
+
+# 是否动态生成新的缩略图以精确匹配客户端请求的分辨率
+#dynamic_thumbnails: true
+# 控制是否应在特定条件下删除本地媒体和远程媒体缓存中的条目（从其他家庭服务器下载的媒体），通常是为了节省空间
+#media_retention:
+#    local_media_lifetime: 50d
+#    remote_media_lifetime: 14d
+
+# 禁止 URL 预览爬虫访问的 IP 地址 CIDR 范围列表
+url_preview_ip_range_blacklist:
+  - '127.0.0.0/8'
+  - '10.0.0.0/8'
+  - '172.16.0.0/12'
+  - '192.168.0.0/16'
+  - '100.64.0.0/10'
+  - '192.0.0.0/24'
+  - '169.254.0.0/16'
+  - '192.88.99.0/24'
+  - '198.18.0.0/15'
+  - '192.0.2.0/24'
+  - '198.51.100.0/24'
+  - '203.0.113.0/24'
+  - '224.0.0.0/4'
+  - '::1/128'
+  - 'fe80::/10'
+  - 'fc00::/7'
+  - '2001:db8::/32'
+  - 'ff00::/8'
+  - 'fec0::/10'
+# 此选项设置允许 URL 预览蜘蛛访问的 IP 地址 CIDR 范围列表
+url_preview_ip_range_whitelist:
+   - '192.168.1.1'
+# 允许的最大 URL 预览爬取大小（以字节为单位）。默认为 10M
+max_spider_size: 8M
+# 在 URL 预览生成期间下载网页时使用的 Accept-Language HTTP 标头的值列表。这允许 Synapse 指定 URL 预览与远程服务器通信时应使用的首选语言
+url_preview_accept_language:
+  - 'en-UK'
+  - 'en-US;q=0.9'
+  - 'fr;q=0.8'
+  - '*;q=0.7'
+
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 用户注册 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+
+# 此主服务器的 ReCAPTCHA 私钥。如果 enable_registration_captcha启用，则必须指定
+# recaptcha_private_key: "YOUR_PRIVATE_KEY"
+# 设置为true，要求用户在注册账户时完成 CAPTCHA 测试
+# enable_registration_captcha: true
+# 以允许用户注册
+#enable_registration: true  
+# 无验证注册
+#enable_registration_without_verification: true
+# 要求用户在注册时提交令牌
+# registration_requires_token: true
+
+# 在此主服务器上注册的用户将自动加入此选项下列出的房间
+#auto_join_rooms:
+# - "#exampleroom:example.com"
+#- "#anotherexampleroom:example.com"
+# 列出的自动创建的房间是否可通过联盟访问
+#autocreate_auto_join_rooms_federated: false
+
+# 将此标志设置为 false 可防止客人帐户自动加入房间
+#auto_join_rooms_for_guests: false
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 用户会话管理 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+# 如果会话使用刷新令牌，则访问令牌保持有效的时间 默认情况下，这是无限的
+# 与单点登录互斥
+# session_lifetime: 24h 
+# 如果会话使用刷新令牌，则访问令牌保持有效的时间
+refreshable_access_token_lifetime: 10m
+# 刷新令牌的有效期 默认情况下，这是无限的
+# refresh_token_lifetime: 24h
+
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 消息缓存策略 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+state:
+  max_event_delay_duration: 24h
+room_version:
+  partial_state:
+    enabled: true
+    max_room_size: 50000
+
+caches:
+  event_cache_size: 200K  # 改为 100,000 个事件，减少内存占用
+  global_factor: 3      # 降低全局因子，避免过度放大缓存
+  stateGroup*: 2          # 状态组因子设为 2，适中支持大型房间
+  expire_caches: true     # 保持启用
+  cache_entry_ttl: 12h     # 缩短至 4 小时，释放旧数据
+  sync_response_cache_duration: 2m  # 缩短至 1 分钟，减少内存占用
+  per_cache_factors:
+    get_current_hosts_in_room: 2
+    get_local_users_in_room: 2
+    get_partial_current_state_ids: 2.0  # 提升至 1.0，优化状态同步
+    _get_presence_for_user: 2
+    get_rooms_for_user: 2
+    _get_server_keys_json: 2
+    stateGroupCache: 4.0      # 提升至 1.0，加快状态组查询
+    stateGroupMembersCache: 4.0  # 提升至 1.0，优化成员数据
+  cache_autotuning:
+    max_cache_memory_usage: 6G    # 增加至 2 GB，充分利用内存
+    target_cache_memory_usage: 4G  # 目标 1.5 GB，留些余量
+    min_cache_ttl: 60s            # 缩短至 15 秒，快速刷新
+
+federation:
+  federation_enabled: true
+  federation_client_minimum_cache_size: 200    # 减小最小缓存，降低内存压力
+  federation_client_cache_size: 100000          # 减至 50,000，适中规模
+  federation_rc_window_size: 200000             # 减至 10,000，减少同步负担
+  federation_rc_sleep_limit: 30                # 减至 20，降低队列压力
+  federation_rc_sleep_delay: 300               # 增至 500 ms，平滑请求
+  federation_rc_reject_limit: 500              # 减至 200，减少拒绝开销
+  federation_rc_concurrent: 40                 # 减至 50，匹配 4 核心 CPU
+  federation_rc_timeout: 30000                 # 减至 30 秒，避免长时间等待
+
+#############################################################################
+#federation_domain_whitelist:
+#  - matrix.envs.net
+#  - envs.net
+#  - ms.aosn.de
+#  - matrix.org
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 消息保留策略 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+retention:
+  enabled: true
+  default_policy:
+    min_lifetime: 1m      # 至少保留 1 小时
+    max_lifetime: 180d      # 最多保留 3 小时
+  allowed_lifetime_min: 1m   #房间管理员最小保存
+  allowed_lifetime_max: 180d
+  purge_jobs:
+    - longest_max_lifetime: 180d  # 删除超过 3 小时的消息
+      interval: 12h              # 每小时检查一次
+  default_action: "delete"      # 删除超期消息
+##############################################################################
+
+log_config: "/data/synapse.log.config"
+media_store_path: /data/media_store
+registration_shared_secret: "dAx&h_a4*:@q;AsBRoiiSmYDRHwtbRA_@K-Xl@2JeU,.l+d-Iw"
+report_stats: false
+macaroon_secret_key: "4y;tqYA#HLz_7+Q2w3d,Mws:z=c4ORh;OY:8yboP6Xv*t+G249"
+form_secret: ":BzAWR#~82Yhzf::l2A:h~VKjqHFvKeJKuSPj:^*HUHo;*7@cX"
+signing_key_path: "/data/mtx.aosn.de.signing.key"
+trusted_key_servers:
+  - server_name: "matrix.org"
+
+
+background_updates:
+    sleep_enabled: false
+
+#////////////////////////历史消息清除计时
+#retention:
+#  enabled: true
+#  default_policy:
+#    min_lifetime: 7d
+#    max_lifetime: 180d
+#  allowed_lifetime_min: 7d  #优先级更高
+#  allowed_lifetime_max: 180d
+#  purge_jobs:
+#    - longest_max_lifetime: 30d
+#      interval: 12h
+#    - shortest_max_lifetime: 30d
+#      interval: 12h
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MSC MAS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+
+experimental_features:
+  experimental_federation:
+    enabled: true
+  experimental_encryption:
+    enabled: true
+  msc2655_enabled: true
+  msc3266_enabled: true
+  # 账户管理深度链接
+#  msc4191_enabled：true
+  # OAuth 2.0授权码授予和刷新令牌授予的使用
+  msc2964_enabled: true
+  # Matrix 中 OAuth 2.0 动态客户端注册的使用
+#  msc2966_enabled：true
+  # OIDC 感知客户端
+  msc3824_enabled: true
+  # API 范围
+  msc2967_enabled: true
+  # Element Call
+  msc4222_enabled: true
+  
+  msc3030_enabled: true
+  # 二维码登录
+  msc4108_enabled: true
+
+  msc3861:
+    enabled: true
+    issuer: https://account.aosn.de
+    client_id: 01JV9R1X1Y30SW673N0F2MYRC0
+    client_auth_method: client_secret_basic
+    client_secret: 'EgP3pp4w4UMh5d/hZfmy1+6ugmu7Ibg8'
+    admin_token: 'PvDFMu93fsLH4CkfyfCqk//ObAyuaxH4'
+    account_management_url: "https://account.aosn.de/account"
+
+suppress_key_server_warning: true
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ OIDC~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+
+
+
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 桥接器 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+app_service_config_files:
+  - /data/registration.yaml
+
+#experimental_features:
+#  msc3202_device_masquerading: true
+
+
+#trusted_key_servers:
+#  - server_name: "matrix.org"
+#app_service_config_files:
+#  - data/registration.yaml
+# vim:ft=yaml
