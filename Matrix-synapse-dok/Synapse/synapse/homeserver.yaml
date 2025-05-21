@@ -1,8 +1,23 @@
 worker_replication_secret: "f7a9c2e5b8d341f690e3b6d24c8e9f1d"
+log_config: "/data/synapse.log.config"
+media_store_path: /data/media_store
 server_name: "mtx.aosn.de"
 pid_file: /data/homeserver.pid
 public_baseurl: https://mtx.aosn.de/
 suppress_key_server_warning: true
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 替换为首次生成的homeserver块代码  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+
+
+registration_shared_secret: "dAx&h_a4*:@q;AsBRoiiSmYDRHwtbRA_@K-Xl@2JeU,.l+d-Iw"
+report_stats: false
+macaroon_secret_key: "4y;tqYA#HLz_7+Q2w3d,Mws:z=c4ORh;OY:8yboP6Xv*t+G249"
+form_secret: ":BzAWR#~82Yhzf::l2A:h~VKjqHFvKeJKuSPj:^*HUHo;*7@cX"
+signing_key_path: "/data/mtx.aosn.de.signing.key"
+trusted_key_servers:
+  - server_name: "matrix.org"
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ |||||||||||||||||||||||||||||||||  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
 
 presence:
   enabled: true
@@ -432,17 +447,7 @@ retention:
     - longest_max_lifetime: 180d  # 删除超过 3 小时的消息
       interval: 12h              # 每小时检查一次
   default_action: "delete"      # 删除超期消息
-##############################################################################
 
-log_config: "/data/synapse.log.config"
-media_store_path: /data/media_store
-registration_shared_secret: "dAx&h_a4*:@q;AsBRoiiSmYDRHwtbRA_@K-Xl@2JeU,.l+d-Iw"
-report_stats: false
-macaroon_secret_key: "4y;tqYA#HLz_7+Q2w3d,Mws:z=c4ORh;OY:8yboP6Xv*t+G249"
-form_secret: ":BzAWR#~82Yhzf::l2A:h~VKjqHFvKeJKuSPj:^*HUHo;*7@cX"
-signing_key_path: "/data/mtx.aosn.de.signing.key"
-trusted_key_servers:
-  - server_name: "matrix.org"
 
 
 background_updates:
