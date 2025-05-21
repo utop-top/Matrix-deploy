@@ -1,0 +1,26 @@
+services:
+  tuwunel:
+    image: docker.io/jevolk/tuwunel:latest
+    container_name: tuwunel
+#    network_mode: "host"
+    restart: unless-stopped
+    ports:
+      - 30055:30055
+      - 8441:8448
+    volumes:
+      - ./tuwunel_db:/var/lib/conduwuit
+      - ./tuwunel.toml:/etc/tuwunel.toml
+    environment:
+      CONDUWUIT_SERVER_NAME: t.aosn.de # 改为你自己想要的服务器域名
+      CONDUWUIT_DATABASE_PATH: /var/lib/tuwunel
+      CONDUWUIT_PORT: 30055
+      CONDUWUIT_MAX_REQUEST_SIZE: 2000000000 # in bytes, ~20 MB
+      CONDUWUIT_ALLOW_REGISTRATION: 'true'
+      CONDUWUIT_REGISTRATION_TOKEN: '天王盖地虎' # 注册令牌
+      #CONDUWUIT_YES_I_AM_VERY_VERY_SURE_I_WANT_AN_OPEN_REGISTRATION_SERVER_PRONE_TO_ABUSE: 'true'
+      CONDUWUIT_ALLOW_FEDERATION: 'true'
+      CONDUWUIT_ALLOW_CHECK_FOR_UPDATES: 'true'
+      CONDUWUIT_TRUSTED_SERVERS: '["matrix.org"]'
+      #CONDUWUIT_LOG: warn,state_res=warn
+      CONDUWUIT_ADDRESS: 0.0.0.0
+      CONDUWUIT_CONFIG: '/etc/tuwunel.toml' # Uncomment if you mapped config toml above

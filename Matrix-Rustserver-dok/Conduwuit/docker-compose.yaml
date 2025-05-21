@@ -1,0 +1,30 @@
+name: conduwuit
+services:
+  homeserver:
+#    image: ghcr.io/girlbossceo/conduwuit:latest
+#    image: ghcr.io/girlbossceo/conduwuit:main-haswell
+    image: forgejo.ellis.link/continuwuation/continuwuity:main
+    container_name: conduwuit
+    network_mode: "host"
+    restart: unless-stopped
+    ports:
+      - 30067:30067
+      - 8446:8446
+    volumes:
+      - ./conduwuit_db:/var/lib/conduwuit
+      - ./conduwuit.toml:/etc/conduwuit.toml
+#      - ./resolv.conf:/etc/resolv.conf:ro
+    environment:
+#      CONDUWUIT_SERVER_NAME: example.com    # 改为你自己想要的服务器域名
+      CONDUWUIT_DATABASE_PATH: /var/lib/conduwuit
+      CONDUWUIT_PORT: 30067
+#      CONDUWUIT_MAX_REQUEST_SIZE: 100000000000 # in bytes, ~20 MB
+      CONDUWUIT_ALLOW_REGISTRATION: 'true'
+      CONDUWUIT_REGISTRATION_TOKEN: '天王盖地虎' # 注册令牌
+      #CONDUWUIT_YES_I_AM_VERY_VERY_SURE_I_WANT_AN_OPEN_REGISTRATION_SERVER_PRONE_TO_ABUSE: 'true'
+      CONDUWUIT_ALLOW_FEDERATION: 'true'
+      CONDUWUIT_ALLOW_CHECK_FOR_UPDATES: 'true'
+      CONDUWUIT_TRUSTED_SERVERS: '["matrix.org"]'
+      #CONDUWUIT_LOG: warn,state_res=warn
+      CONDUWUIT_ADDRESS: 0.0.0.0
+      CONDUWUIT_CONFIG: '/etc/conduwuit.toml' # Uncomment if you mapped config toml above

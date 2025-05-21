@@ -1,0 +1,617 @@
+
+[global]
+
+# 服务器名称，用于用户和房间 ID/别名的后缀。
+# 反向代理和委托文档：https://tuwunel.chat/deploying/generic.html#setting-up-the-reverse-proxy
+# 另见底部 [global.well_known] 部分。
+# 示例："girlboss.ceo"
+# 必须编辑此项，设置后不可更改，除非清空数据库。
+#server_name =
+
+# Tuwunel 监听的默认地址（IPv4 或 IPv6）。
+# Docker 或容器 NAT 网络需设为 "0.0.0.0"。
+# 多地址监听示例：["127.0.0.1", "::1"]
+#address = ["127.0.0.1", "::1"]
+
+# Tuwunel 监听的端口。
+# 反向代理参见：https://tuwunel.chat/deploying/generic.html#setting-up-the-reverse-proxy
+# Docker 中勿改此项，需映射外部端口。
+# 多端口监听示例：[8080, 8448]
+#port = 8008
+
+# UNIX 套接字路径。
+# 不能同时监听 IP 和 UNIX 套接字，需移除/注释 `address`。
+# 示例："/run/tuwunel/tuwunel.sock"
+#unix_socket_path =
+
+# UNIX 套接字权限（八进制）。
+#unix_socket_perms = 660
+
+# 数据存储目录，包括媒体。
+# 必须编辑此项。
+# 示例："/var/lib/tuwunel"
+#database_path =
+
+# 在线数据库备份路径。
+# 更多信息：https://tuwunel.chat/maintenance.html#backups
+# 示例："/opt/tuwunel-db-backups"
+#database_backup_path =
+
+# 保留的备份数量。
+#database_backups_to_keep = 1
+
+# 用户注册时显示名称后缀，禁用设为 ""。
+#new_user_displayname_suffix = "🎔"
+
+# 内存 LRU 缓存调整倍数。
+#cache_capacity_modifier = 1.0
+
+# 数据库读取缓存内存（MB）。
+#db_cache_capacity_mb = varies by system
+
+# 数据库写入缓存内存（MB）。
+#db_write_buffer_capacity_mb = varies by system
+
+# DNS 缓存条目数。
+#dns_cache_entries = 32768
+
+# DNS 缓存最小生存时间（秒）。
+#dns_min_ttl = 10800
+
+# NXDOMAIN 缓存最小生存时间（秒）。
+#dns_min_ttl_nxdomain = 259200
+
+# DNS 查询重试次数。
+#dns_attempts = 10
+
+# DNS 查询超时（秒）。
+#dns_timeout = 10
+
+# DNS 错误时回退到 TCP。
+#dns_tcp_fallback = true
+
+# 查询所有名字服务器。
+#query_all_nameservers = true
+
+# 仅使用 TCP 查询。
+#query_over_tcp_only = false
+
+# DNS A/AAAA 查询策略。
+# 1 - Ipv4Only, 2 - Ipv6Only, 3 - Ipv4AndIpv6, 4 - Ipv6thenIpv4, 5 - Ipv4thenIpv6
+#ip_lookup_strategy = 5
+
+# 最大文件上传请求大小（字节）。
+#max_request_size = 20971520
+
+# 连接超时（秒），用于 URL 预览和更新检查。
+#request_conn_timeout = 10
+
+# 请求超时（秒），用于 URL 预览和更新检查。
+#request_timeout = 35
+
+# 请求总超时（秒），用于 URL 预览和更新检查。
+#request_total_timeout = 320
+
+# 空闲连接池超时（秒），用于 URL 预览和更新检查。
+#request_idle_timeout = 5
+
+# 每主机最大空闲连接数。
+#request_idle_per_host = 1
+
+# 联合 well-known 解析连接超时（秒）。
+#well_known_conn_timeout = 6
+
+# 联合 well-known 请求超时（秒）。
+#well_known_timeout = 10
+
+# 联合客户端请求超时（秒）。
+#federation_timeout = 300
+
+# 联合客户端空闲连接池超时（秒）。
+#federation_idle_timeout = 25
+
+# 联合客户端每主机最大空闲连接数。
+#federation_idle_per_host = 1
+
+# 联合发送者请求超时（秒）。
+#sender_timeout = 180
+
+# 联合发送者空闲连接池超时（秒）。
+#sender_idle_timeout = 180
+
+# 联合发送者重试退避限制（秒）。
+#sender_retry_backoff_limit = 86400
+
+# 应用服务请求超时（秒）。
+#appservice_timeout = 35
+
+# 应用服务空闲连接池超时（秒）。
+#appservice_idle_timeout = 300
+
+# 通知网关推送器空闲连接池超时（秒）。
+#pusher_idle_timeout = 15
+
+# 客户端请求接收最大时间（秒）。
+#client_receive_timeout = 75
+
+# 客户端请求处理最大时间（秒）。
+#client_request_timeout = 180
+
+# 客户端响应传输最大时间（秒）。
+#client_response_timeout = 120
+
+# 客户端请求关闭宽限期（秒）。
+#client_shutdown_timeout = 10
+
+# 联合请求关闭宽限期（秒）。
+#sender_shutdown_timeout = 5
+
+# 是否允许注册。
+#allow_registration = false
+
+# 允许无限制注册，易受滥用。
+#yes_i_am_very_very_sure_i_want_an_open_registration_server_prone_to_abuse = false
+
+# 注册令牌。
+# 必须编辑此项或使用 registration_token_file。
+# 示例："o&^uCtes4HPf0Vu@F20jQeeWE7"
+#registration_token =
+
+# 注册令牌文件路径。
+# 示例："/etc/tuwunel/.reg_token"
+#registration_token_file =
+
+# 是否允许加密房间和事件。
+#allow_encryption = true
+
+# 是否允许联合。
+#allow_federation = true
+
+# 是否允许联合请求发送给自己。
+#federation_loopback = false
+
+# 离开房间时自动调用 /forget。
+#forget_forced_upon_leave = false
+
+# 是否要求认证获取用户资料。
+#require_auth_for_profile_requests = false
+
+# 是否允许联合公共房间目录。
+#allow_public_room_directory_over_federation = false
+
+# 是否允许未经认证查询公共房间目录。
+#allow_public_room_directory_without_auth = false
+
+# 是否允许访客访问 TURN 凭证。
+#turn_allow_guests = false
+
+# 是否仅允许管理员发布房间到目录。
+#lockdown_public_room_directory = false
+
+# 是否允许联合设备显示名称。
+#allow_device_name_federation = false
+
+# 是否允许传入的联合用户资料查询。
+#allow_inbound_profile_lookup_federation_requests = true
+
+# 是否允许标准用户创建房间。
+#allow_room_creation = true
+
+# 是否允许不稳定房间版本。
+#allow_unstable_room_versions = true
+
+# 默认房间版本。
+#default_room_version = 11
+
+# 代理配置。
+#proxy = "none"
+
+# 信任的服务器列表。
+#trusted_servers = ["matrix.org"]
+
+# 是否首先查询信任的密钥服务器。
+#query_trusted_key_servers_first = false
+
+# 加入房间时是否首先查询信任的密钥服务器。
+#query_trusted_key_servers_first_on_join = true
+
+# 是否仅查询信任的密钥服务器。
+#only_query_trusted_key_servers = false
+
+# 信任服务器批处理查询最大密钥数。
+#trusted_server_batch_size = 1024
+
+# Tuwunel 最大日志级别。
+#log = "info"
+
+# 是否使用 ANSI 颜色输出日志。
+#log_colors = true
+
+# 日志中的 span 事件。
+#log_span_events = "none"
+
+# TUWUNEL_LOG 是否使用正则表达式。
+#log_filter_regex = true
+
+# 日志中显示 ThreadId。
+#log_thread_ids = false
+
+# OpenID 令牌过期时间（秒）。
+#openid_token_ttl = 3600
+
+# 是否允许现有会话为另一客户端创建登录令牌。
+#login_via_existing_session = true
+
+# 登录令牌过期时间（毫秒）。
+#login_token_ttl = 120000
+
+# 静态 TURN 用户名。
+#turn_username = false
+
+# 静态 TURN 密码。
+#turn_password = false
+
+# TURN URI 列表。
+#turn_uris = []
+
+# TURN 秘密。
+#turn_secret = false
+
+# TURN 秘密文件路径。
+#turn_secret_file =
+
+# TURN TTL（秒）。
+#turn_ttl = 86400
+
+# 自动加入的房间列表。
+#auto_join_rooms = []
+
+# 是否自动停用尝试加入禁止房间的用户。
+#auto_deactivate_banned_room_attempts = false
+
+# RocksDB 日志级别。
+#rocksdb_log_level = "error"
+
+# RocksDB 日志文件最大大小（字节）。
+#rocksdb_max_log_file_size = 4194304
+
+# RocksDB 日志轮换时间（秒）。
+#rocksdb_log_time_to_roll = 0
+
+# 是否为 HDD 优化 RocksDB。
+#rocksdb_optimize_for_spinning_disks = false
+
+# 是否启用直接 I/O。
+#rocksdb_direct_io = true
+
+# RocksDB 并行线程数。
+#rocksdb_parallelism_threads = varies by system
+
+# RocksDB 最大日志文件数。
+#rocksdb_max_log_files = 3
+
+# RocksDB 压缩算法。
+#rocksdb_compression_algo = "zstd"
+
+# RocksDB 压缩级别。
+#rocksdb_compression_level = 32767
+
+# RocksDB 底层压缩级别。
+#rocksdb_bottommost_compression_level = 32767
+
+# 是否启用底层压缩。
+#rocksdb_bottommost_compression = true
+
+# RocksDB 恢复模式。
+#rocksdb_recovery_mode = 1
+
+# 是否启用偏执文件检查。
+#rocksdb_paranoid_file_checks = false
+
+# 是否启用校验和验证。
+#rocksdb_checksums = true
+
+# 是否启用原子刷新。
+#rocksdb_atomic_flush = false
+
+# 是否启用修复模式。
+#rocksdb_repair = false
+
+# 是否启用空闲 CPU 优先级。
+#rocksdb_compaction_prio_idle = false
+
+# 是否启用空闲 I/O 优先级。
+#rocksdb_compaction_ioprio_idle = true
+
+# 是否启用压缩。
+#rocksdb_compaction = true
+
+# RocksDB 统计级别。
+#rocksdb_stats_level = 1
+
+# 紧急密码。
+#emergency_password =
+
+# 通知推送路径。
+#notification_push_path = "/_matrix/push/v1/notify"
+
+# 是否允许本地状态更新/请求。
+#allow_local_presence = true
+
+# 是否允许传入的联合状态更新/请求。
+#allow_incoming_presence = true
+
+# 是否允许传出的联合状态更新/请求。
+#allow_outgoing_presence = true
+
+# 状态空闲超时（秒）。
+#presence_idle_timeout_s = 300
+
+# 状态离线超时（秒）。
+#presence_offline_timeout_s = 1800
+
+# 是否启用远程用户状态空闲计时器。
+#presence_timeout_remote_users = true
+
+# 是否允许传入的联合阅读回执。
+#allow_incoming_read_receipts = true
+
+# 是否允许传出的联合阅读回执。
+#allow_outgoing_read_receipts = true
+
+# 是否允许传出的联合打字更新。
+#allow_outgoing_typing = true
+
+# 是否允许传入的联合打字更新。
+#allow_incoming_typing = true
+
+# 联合用户打字最大时间（秒）。
+#typing_federation_timeout_s = 30
+
+# 本地客户端打字最小时间（秒）。
+#typing_client_timeout_min_s = 15
+
+# 本地客户端打字最大时间（秒）。
+#typing_client_timeout_max_s = 45
+
+# 是否启用 zstd 压缩 HTTP 响应。
+#zstd_compression = false
+
+# 是否启用 gzip 压缩 HTTP 响应。
+#gzip_compression = false
+
+# 是否启用 brotli 压缩 HTTP 响应。
+#brotli_compression = false
+
+# 是否允许访客注册。
+#allow_guest_registration = false
+
+# 是否记录访客注册。
+#log_guest_registrations = false
+
+# 是否允许访客自动加入房间。
+#allow_guests_auto_join_rooms = false
+
+# 是否启用旧版未经认证的媒体端点。
+#allow_legacy_media = false
+
+# 是否冻结旧版媒体。
+#freeze_legacy_media = true
+
+# 是否启动时检查媒体目录一致性。
+#media_startup_check = true
+
+# 是否启用 Conduit 媒体目录兼容性。
+#media_compat_file_link = false
+
+# 是否修剪丢失的媒体。
+#prune_missing_media = false
+
+# 禁止从指定服务器下载远程媒体。
+#prevent_media_downloads_from = []
+
+# 禁止的远程服务器名称。
+#forbidden_remote_server_names = []
+
+# 禁止的远程房间目录服务器名称。
+#forbidden_remote_room_directory_server_names = []
+
+# IP 范围黑名单。
+#ip_range_denylist =
+
+# URL 预览请求的源 IP 或网络接口。
+#url_preview_bound_interface =
+
+# URL 预览允许的域名列表（包含匹配）。
+#url_preview_domain_contains_allowlist = []
+
+# URL 预览允许的明确域名列表。
+#url_preview_domain_explicit_allowlist = []
+
+# URL 预览禁止的明确域名列表。
+#url_preview_domain_explicit_denylist = []
+
+# URL 预览允许的 URL 列表（包含匹配）。
+#url_preview_url_contains_allowlist = []
+
+# URL 预览最大爬取大小（字节）。
+#url_preview_max_spider_size = 256000
+
+# 是否检查根域名。
+#url_preview_check_root_domain = false
+
+# 禁止的房间别名和 ID 模式。
+#forbidden_alias_names = []
+
+# 禁止的用户名模式。
+#forbidden_usernames = []
+
+# 是否启动时重试失败消息。
+#startup_netburst = true
+
+# 启动时保留的消息数量。
+#startup_netburst_keep = 50
+
+# 是否阻止非管理员发送和接收邀请。
+#block_non_admin_invites = false
+
+# 是否允许管理员在非管理员房间使用命令。
+#admin_escape_commands = true
+
+# 是否自动激活管理员房间控制台。
+#admin_console_automatic = false
+
+# 启动时执行的管理员命令列表。
+#admin_execute = []
+
+# 是否忽略启动命令中的错误。
+#admin_execute_errors_ignore = false
+
+# SIGUSR2 时执行的管理员命令列表。
+#admin_signal_execute = []
+
+# 管理员命令日志捕获的最大日志级别。
+#admin_log_capture = "info"
+
+# 管理员房间的默认标签。
+#admin_room_tag = "m.server_notice"
+
+# 是否启用 Sentry 监控。
+#sentry = false
+
+# Sentry 报告 URL。
+#sentry_endpoint = ""
+
+# 是否在 Sentry 报告中发送服务器名称。
+#sentry_send_server_name = false
+
+# Sentry 性能监控采样率。
+#sentry_traces_sample_rate = 0.15
+
+# 是否附加堆栈跟踪到 Sentry 报告。
+#sentry_attach_stacktrace = false
+
+# 是否将恐慌发送到 Sentry。
+#sentry_send_panic = true
+
+# 是否将错误发送到 Sentry。
+#sentry_send_error = true
+
+# Sentry 发送日志级别。
+#sentry_filter = "info"
+
+# 是否启用 tokio-console。
+#tokio_console = false
+
+# 测试选项。
+#test = false
+
+# 是否控制管理员房间通知。
+#admin_room_notices = true
+
+# 是否启用数据库池亲和性支持。
+#db_pool_affinity = true
+
+# 数据库前端池工作线程数。
+#db_pool_workers = 32
+
+# 数据库池工作组大小限制。
+#db_pool_workers_limit = 64
+
+# 数据库前端池队列大小乘数。
+#db_pool_queue_mult = 4
+
+# 流并发性初始值。
+#stream_width_default = 32
+
+# 流宽度缩放因子。
+#stream_width_scale = 1.0
+
+# 初始放大因子。
+#stream_amplification = 1024
+
+# 发送者任务工作线程数。
+#sender_workers = 0
+
+# 是否启用监听套接字。
+#listening = true
+
+# 是否启用配置重载信号。
+#config_reload_signal = true
+
+[global.tls]
+
+# TLS 证书文件路径。
+#certs =
+
+# TLS 证书私钥路径。
+#key =
+
+# 是否允许 HTTP 和 HTTPS 连接（不安全！）。
+#dual_protocol = false
+
+[global.well_known]
+
+# 客户端 well-known 文件提供的服务器 URL。
+#client =
+
+# 服务器 well-known 文件提供的 URL 基础域名和端口。
+#server =
+
+# 支持页面。
+#support_page =
+
+# 支持角色。
+#support_role =
+
+# 支持邮箱。
+#support_email =
+
+# 支持 MXID。
+#support_mxid =
+
+[global.blurhashing]
+
+# blurhashing x 组件。
+#components_x = 4
+
+# blurhashing y 组件。
+#components_y = 3
+
+# 服务器 blurhash 最大原始大小（字节）。
+#blurhash_max_raw_size = 33554432
+
+[global.ldap]
+
+# 是否启用 LDAP 登录。
+#enable = false
+
+# LDAP 服务器 URI。
+#uri =
+
+# 搜索根。
+#base_dn = false
+
+# 绑定 DN。
+#bind_dn = false
+
+# 绑定密码文件路径。
+#bind_password_file = false
+
+# 用户搜索过滤器。
+#filter = "(objectClass=*)"
+
+# 用户唯一标识属性。
+#uid_attribute = "uid"
+
+# 用户邮箱属性。
+#mail_attribute = "mail"
+
+# 用户名称属性。
+#name_attribute = "givenName"
+
+# 管理员用户搜索根。
+#admin_base_dn = false
+
+# 管理员用户搜索过滤器。
+#admin_filter = false
