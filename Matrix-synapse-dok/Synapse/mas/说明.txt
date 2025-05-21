@@ -1,0 +1,2 @@
+# 使用脚本来获取mas密钥 生成新的config.yaml文件
+# 并将homeserver 文件密钥复制到synapse homeserver文件位置
