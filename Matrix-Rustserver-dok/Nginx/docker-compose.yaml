@@ -1,0 +1,26 @@
+services:
+  nginx-host:
+    image: nginx
+    container_name: nginx-host
+    restart: always
+    network_mode: "host"
+    ports:
+#      - "8777:8077"
+      - "443:443"
+    volumes:
+      - ./config:/etc/nginx
+      - ./ele-hq:/etc/nginx/ele-hq
+      - ./other:/etc/nginx/other
+      - /root/Certs/Certbot:/etc/nginx/ssl:ro
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65535
+        hard: 65535
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+
