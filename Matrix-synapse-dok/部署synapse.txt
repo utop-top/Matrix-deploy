@@ -39,7 +39,67 @@ trusted_key_servers:
 最后复制homeserver-example.yaml代码
 至： homeserer.yaml文件中
 
-cd /root/Matrix/Synapse
+进入 
+cd /root/matrix/SYnapse/mas
+
+chmod +x ./start_config.sh
+
+根据提示输入你的matrix 服务器地址 以及mas身份验证服务器地址
+系统自动生成 config.yaml文件 
+
+将生成的home文件中的所有内容复制替换掉到homeserver。yaml文件中
+
+experimental_features:
+  msc3266_enabled: true
+  msc4222_enabled: true
+  msc4108_enabled: true
+  msc3861:
+    enabled: true
+    issuer: https://account.aosn.de
+    client_id: 01JV9R1X1Y30SW673N0F2MYRC0
+    client_auth_method: client_secret_basic
+    client_secret: 'EgP3pp4w4UMh5d/hZfmy1+6ugmu7Ibg8'
+    admin_token: 'PvDFMu93fsLH4CkfyfCqk//ObAyuaxH4'
+    account_management_url: "https://account.aosn.de/account"
+
+
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MSC MAS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
+
+experimental_features:
+  experimental_federation:
+    enabled: true
+  experimental_encryption:
+    enabled: true
+  msc2655_enabled: true
+  msc3266_enabled: true
+  # 账户管理深度链接
+#  msc4191_enabled：true
+  # OAuth 2.0授权码授予和刷新令牌授予的使用
+  msc2964_enabled: true
+  # Matrix 中 OAuth 2.0 动态客户端注册的使用
+#  msc2966_enabled：true
+  # OIDC 感知客户端
+  msc3824_enabled: true
+  # API 范围
+  msc2967_enabled: true
+  # Element Call
+  msc4222_enabled: true
+  
+  msc3030_enabled: true
+  # 二维码登录
+  msc4108_enabled: true
+
+  msc3861:
+    enabled: true
+    issuer: https://account.aosn.de
+    client_id: 01JV9R1X1Y30SW673N0F2MYRC0
+    client_auth_method: client_secret_basic
+    client_secret: 'EgP3pp4w4UMh5d/hZfmy1+6ugmu7Ibg8'
+    admin_token: 'PvDFMu93fsLH4CkfyfCqk//ObAyuaxH4'
+    account_management_url: "https://account.aosn.de/account"
+
+#####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MSC MAS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
 
 启动docker 容器
 
