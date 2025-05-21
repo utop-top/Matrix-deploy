@@ -46,6 +46,8 @@ cd /root/matrix/SYnapse/mas
 
 chmod +x ./start_config.sh
 
+./start_config.sh 运行脚本
+
 根据提示输入你的matrix 服务器地址 以及mas身份验证服务器地址
 系统自动生成 config.yaml文件 
 
