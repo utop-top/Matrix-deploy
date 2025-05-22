@@ -22,3 +22,5 @@
 ### element-call   ：call.example.com;   jwt.example.com;   livekit.example.com
 ### element-web    : app.example.com
 ### 记得将上述域名解析后更改nginx 中相关的域名
+
+## ntfy为android的自定义推送服务，你只需要在服务器中搭建ntfy,使用命令创建一个管理员账户（项目中提供在ntfy/start。txt文件中）下载ntfy app ，配置好服务器。在element X 客户端选择ntfy推送
