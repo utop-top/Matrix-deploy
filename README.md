@@ -19,6 +19,6 @@
 ### 假设你使用的域名为 example.com 作为matrix 主服务器地址与名称， example.com就是matrix服务器的server_name
 ### 那么你需要解析的域名有：
 ### matrix_server  : example.com
-### element-call   ： call.example.com;   jwt.example.com;   livekit.example.com
+### element-call   ：call.example.com;   jwt.example.com;   livekit.example.com
 ### element-web    : app.example.com
 ### 记得将上述域名解析后更改nginx 中相关的域名
