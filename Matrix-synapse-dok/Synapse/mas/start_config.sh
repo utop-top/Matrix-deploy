@@ -224,7 +224,20 @@ policy:
       - admin
 
 account:
+  # 是否开放注册
   password_registration_enabled: false
+    # 是否允许用户更改邮箱地址，默认值为 `true`                     
+  email_change_allowed: true 
+    # 是否允许用户更改显示名称，默认值为 `true`                            
+  displayname_change_allowed: true
+    # 是否允许用户更改密码，默认值为 `true`
+  password_change_allowed: true                           
+   # 是否启用基于邮箱的密码恢复，默认值为 `false`
+  password_recovery_enabled: true                        
+    # 是否允许用户删除自己的账户，默认值为 `true`。
+  account_deactivation_allowed: true                     
+    # 是否允许用户使用邮箱地址登录，默认值为 `false`
+  login_with_email_allowed: true
 
 branding:
   service_name: null
