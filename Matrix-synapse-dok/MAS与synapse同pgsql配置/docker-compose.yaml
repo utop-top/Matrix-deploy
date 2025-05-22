@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  synapse:
+    image: ghcr.io/element-hq/synapse:latest
+    container_name: synapse
+    user: "991:991"
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8008:8008"  
+      - "127.0.0.1:8448:8448"  
+    volumes:
+      - ./synapse:/data  
+    environment:
+      - SYNAPSE_CONFIG_DIR=/data
+      - SYNAPSE_CONFIG_PATH=/data/homeserver.yaml
+      - SYNAPSE_SERVER_NAME=ms.aosn.de
+      - SYNAPSE_REPORT_STATS=no  
+      - SYNAPSE_DB_HOST=synapse-db  # 指向 synapse-db
+      - SYNAPSE_DB_USER=synapse_user  
+      - SYNAPSE_DB_NAME=synapse  
+      - SYNAPSE_DB_PASSWORD=your_password  
+    depends_on:
+      - synapse-db  
+    networks:
+      - matrix_net
+
+  synapse-db:
+    image: postgres:latest
+    container_name: synapse-db
+    restart: unless-stopped
+    shm_size: "1g"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U synapse_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_DB=synapse
+      - POSTGRES_USER=synapse_user
+      - POSTGRES_PASSWORD=your_password
+      - POSTGRES_INITDB_ARGS=--encoding=UTF8 --locale=C
+    volumes:
+      - ./synapse_db:/var/lib/postgresql/data:rw 
+      - ./synapse_db_conf/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./mas_db_init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: postgres -c 'config_file=/etc/postgresql/postgresql.conf'
+    ports:
+      - "127.0.0.1:5412:5432"
+    networks:
+      - matrix_net
+
+  mas:
+    image: ghcr.io/element-hq/matrix-authentication-service:latest
+    user: "0:0"
+    restart: unless-stopped
+    container_name: mas
+    ports:
+      - 8100:8080
+    volumes:
+      - ./mas:/data:rw
+    environment:
+      - MAS_DATABASE_HOST=synapse-db  # 指向 synapse-db
+      - MAS_DATABASE_NAME=mas
+      - MAS_DATABASE_USER=synapse_user
+      - MAS_DATABASE_PASSWORD=your_password
+    command: "server --config=/data/config.yaml"
+    depends_on:
+      - synapse-db
+      - synapse-redis
+    networks:
+      - matrix_net
+
+  synapse-redis:
+    image: redis:latest
+    container_name: synapse-redis
+    restart: unless-stopped
+    networks:
+      - matrix_net
+
+networks:
+  matrix_net:
+    driver: bridge

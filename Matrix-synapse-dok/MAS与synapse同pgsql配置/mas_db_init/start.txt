@@ -1,0 +1,12 @@
+手动创建 MAs数据库：
+docker exec -it synapse-db psql -U synapse_user -d postgres -c "CREATE DATABASE mas;"
+
+赋予权限
+
+docker exec -it synapse-db psql -U synapse_user -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE mas TO synapse_user;"
+
+重启MAS容器
+
+docker-compose restart mas
+
+
