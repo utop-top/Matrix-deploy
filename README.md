@@ -15,10 +15,10 @@
 ### synapse conduwuit 都为matirx服务器; 
 ### ele-hq中为相关的服务配置，
 ### element-web(网页登录客户端)
-### element-call （视频通话服务,包含element-call,lk-jwt,likekit;)
+### element-call （视频通话服务,包含element-call,   lk-jwt,   likekit;)
 ### 假设你使用的域名为 example.com 作为matrix 主服务器地址与名称， example.com就是matrix服务器的server_name
 ### 那么你需要解析的域名有：
 ### matrix_server : example.com
-### element-call 你需要解析的域名 call.example.com; jwt.example.com; livekit.example.com
+### element-call 你需要解析的域名 call.example.com;   jwt.example.com;   livekit.example.com
 ### element-web : app.example.com
 ### 记得将上述域名解析后更改nginx 中相关的域名
