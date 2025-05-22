@@ -1,7 +1,7 @@
 # 这里是整理出来的matrix 部署文档；使用docker 或者k8s 部署
 
-## Matrix 是联邦通讯加密协议 [Matrix](https://matrix.org)
-## Matrix github社区 [github](https://github.com/element-hq/synapse) 目前由element分叉
+## Matrix 是联邦通讯加密协议 官网：[Matrix.org](https://matrix.org)
+## Matrix github社区 [github/element-hq](https://github.com/element-hq/synapse) 目前由element分叉
 
 #### Synapse 服务器，主社区版（python语言）功能齐全且带实验功能的matrix
 
