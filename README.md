@@ -7,5 +7,5 @@
 ### Synapse 服务器，主社区版（python语言）功能齐全且带实验功能的matrix
 
 #### Matrix continuwuity （rust）轻量高效的matrix服务器 由conduwuit分叉出来，目前处于积极的维护状态，社区活跃
-##### continuwuity官网 [continuwuity](https://continuwuity.org/) 
-##### 项目地址[forgejo.ellis.link](https://forgejo.ellis.link/continuwuation/continuwuity)
+#### continuwuity官网 [continuwuity](https://continuwuity.org/) 
+#### 项目地址[forgejo.ellis.link](https://forgejo.ellis.link/continuwuation/continuwuity)
