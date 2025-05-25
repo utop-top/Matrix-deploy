@@ -1,0 +1,300 @@
+services:
+  generic-worker-2:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: generic-worker-2
+    restart: unless-stopped
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/generic_worker_2.yaml"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fSs http://localhost:8081/health || exit 1"]
+      start_period: "5s"
+      interval: "15s"
+      timeout: "5s"
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw 
+    environment:
+      SYNAPSE_WORKER: synapse.app.generic_worker
+    ports:
+      - 9102:9102
+
+
+  generic-worker-3:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: generic-worker-3
+    restart: unless-stopped
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/generic_worker_3.yaml"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fSs http://localhost:8081/health || exit 1"]
+      start_period: "5s"
+      interval: "15s"
+      timeout: "5s"
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw 
+    environment:
+      SYNAPSE_WORKER: synapse.app.generic_worker
+    ports:
+      - 9103:9103
+
+
+  generic-worker-4:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: generic-worker-4
+    restart: unless-stopped
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/generic_worker_4.yaml"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fSs http://localhost:8081/health || exit 1"]
+      start_period: "5s"
+      interval: "15s"
+      timeout: "5s"
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw 
+    environment:
+      SYNAPSE_WORKER: synapse.app.generic_worker
+    ports:
+      - 9104:9104
+
+
+
+
+  generic-worker-5:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: generic-worker-5
+    restart: unless-stopped
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/generic_worker_5.yaml"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fSs http://localhost:8081/health || exit 1"]
+      start_period: "5s"
+      interval: "15s"
+      timeout: "5s"
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw 
+    environment:
+      SYNAPSE_WORKER: synapse.app.generic_worker
+    ports:
+      - 9105:9105
+
+
+  generic-worker-6:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: generic-worker-6
+    restart: unless-stopped
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/generic_worker_6.yaml"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fSs http://localhost:8081/health || exit 1"]
+      start_period: "5s"
+      interval: "15s"
+      timeout: "5s"
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw 
+    environment:
+      SYNAPSE_WORKER: synapse.app.generic_worker
+    ports:
+      - 9106:9106
+
+
+
+#  event-persister-1:
+#    image: matrixdotorg/synapse:latest
+#    user: "991:991"
+#    container_name: event-persister-1
+#    restart: unless-stopped
+#    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/event_persister_1.yaml"]
+#    healthcheck:
+#      test: ["CMD-SHELL", "curl -fSs http://localhost:8081/health || exit 1"]
+#      start_period: "5s"
+#      interval: "15s"
+#      timeout: "5s"
+#    networks:
+#      - matrix_net
+#    volumes:
+#      - ${SYNAPSE_DATA_PATH:-./synapse}:/data:rw 
+#    environment:
+#      SYNAPSE_WORKER: synapse.app.generic_worker
+#    ports:
+#      - 9201:9201
+#    depends_on:
+#      - synapse
+#      - synapse-db
+#      - synapse-redis
+
+#  event-persister-2:
+#    image: matrixdotorg/synapse:latest
+#    user: "991:991"
+#    container_name: event-persister-2
+#    restart: unless-stopped
+#    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/event_persister_2.yaml"]
+#    healthcheck:
+#      test: ["CMD-SHELL", "curl -fSs http://localhost:8081/health || exit 1"]
+#      start_period: "5s"
+#      interval: "15s"
+#      timeout: "5s"
+#    networks:
+#      - matrix_net
+#    volumes:
+#      - ${SYNAPSE_DATA_PATH:-./synapse}:/data:rw 
+#    environment:
+#      SYNAPSE_WORKER: synapse.app.generic_worker
+#    ports:
+#      - 9202:9202
+#    depends_on:
+#      - synapse
+#      - synapse-db
+#      - synapse-redis
+
+
+
+  media-worker-2:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: media-worker-2
+    restart: unless-stopped
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/media_worker_2.yaml"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fSs http://localhost:8083/health || exit 1"]
+      start_period: "5s"
+      interval: "15s"
+      timeout: "5s"
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw
+    environment:
+      - SYNAPSE_WORKER=synapse.app.media_repository
+    ports:
+      - 9302:9302
+
+
+  media-worker-3:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: media-worker-3
+    restart: unless-stopped
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/media_worker_3.yaml"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fSs http://localhost:8083/health || exit 1"]
+      start_period: "5s"
+      interval: "15s"
+      timeout: "5s"
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw
+    environment:
+      - SYNAPSE_WORKER=synapse.app.media_repository
+    ports:
+      - 9303:9303
+
+
+  federation-sender-2:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: federation-sender-2
+    restart: unless-stopped
+    mem_limit: 1024m
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/federation_sender_2.yaml"]
+    healthcheck:
+      disable: true
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw 
+    ports:
+      - 9402:9402
+    environment:
+      SYNAPSE_WORKER: synapse.app.federation_sender
+
+
+  federation-sender-3:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: federation-sender-3
+    restart: unless-stopped
+    mem_limit: 1024m
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/federation_sender_3.yaml"]
+    healthcheck:
+      disable: true
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw
+    ports:
+      - 9403:9403 
+    environment:
+      SYNAPSE_WORKER: synapse.app.federation_sender
+
+
+
+  federation-sender-4:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: federation-sender-4
+    restart: unless-stopped
+    mem_limit: 1024m
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/federation_sender_4.yaml"]
+    healthcheck:
+      disable: true
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw
+    ports:
+      - 9404:9404 
+    environment:
+      SYNAPSE_WORKER: synapse.app.federation_sender
+
+
+
+  federation-sender-5:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: federation-sender-5
+    restart: unless-stopped
+    mem_limit: 1024m
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/federation_sender_5.yaml"]
+    healthcheck:
+      disable: true
+    networks:
+      - matrix_net
+    volumes:
+      - ./synapse:/data:rw
+    ports:
+      - 9405:9405 
+    environment:
+      SYNAPSE_WORKER: synapse.app.federation_sender
+
+
+  push-worker-2:
+    image: matrixdotorg/synapse:latest
+    user: "991:991"
+    container_name: push-worker-2
+    restart: unless-stopped
+    entrypoint: ["/start.py", "run", "--config-path=/data/homeserver.yaml", "--config-path=/data/workers/push_worker_2.yaml"]
+    volumes:
+      - ./synapse:/data:rw
+    environment:
+      - SYNAPSE_WORKER=synapse.app.pusher
+    ports:
+      - 9502:9502
+
+
+networks:
+  matrix_net:
+    external: true
+
+
+
+
