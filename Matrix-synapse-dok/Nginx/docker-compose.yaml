@@ -10,6 +10,7 @@ services:
     volumes:
       - ./config:/etc/nginx
       - ./synapse:/etc/nginx/synapse
+      - ./synapse_worker:/etc/nginx/synapse_worker
       - ./ele-hq:/etc/nginx/ele-hq
       - ./other:/etc/nginx/other
       - ./well-known:/var/www
