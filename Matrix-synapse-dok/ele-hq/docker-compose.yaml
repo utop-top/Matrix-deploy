@@ -73,7 +73,7 @@ services:
       - matrix_net
 
   ele-hq-redis:
-    image: redis:6-alpine
+    image: redis:latest
     restart: unless-stopped
     container_name: ele-hq-redis
     ports:
