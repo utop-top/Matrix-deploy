@@ -3,10 +3,11 @@ mkdir /root/Matrix/Synapse
 cd /root/Matrix/Synapse
 #####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 复制下面代码  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
 docker run -it --rm \
-    -v $(pwd)/synapse:/data \
-    -e SYNAPSE_SERVER_NAME=example.com \   #改为你的server——name
-    -e SYNAPSE_REPORT_STATS=no \
-    matrixdotorg/synapse:latest generate
+-v $(pwd)/synapse:/data \
+-e SYNAPSE_SERVER_NAME=example.com \ #改为你的server_name
+-e SYNAPSE_REPORT_STATS=no \
+matrixdotorg/synapse:latest generate
+
 
 
 回车运行
@@ -109,4 +110,5 @@ experimental_features:
 启动docker 容器
 
 docker compose up -d 
+
 
