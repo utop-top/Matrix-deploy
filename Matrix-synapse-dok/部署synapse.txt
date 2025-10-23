@@ -4,7 +4,7 @@ cd /root/Matrix/Synapse
 #####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 复制下面代码  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##########
 docker run -it --rm \
 -v $(pwd)/synapse:/data \
--e SYNAPSE_SERVER_NAME=example.com \#改为你的server_name
+-e SYNAPSE_SERVER_NAME=example.com \#改为你的server_name删除注释
 -e SYNAPSE_REPORT_STATS=no \
 matrixdotorg/synapse:latest generate
 
@@ -110,6 +110,7 @@ experimental_features:
 启动docker 容器
 
 docker compose up -d 
+
 
 
 
